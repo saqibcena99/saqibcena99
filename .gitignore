@@ -1,0 +1,11 @@
+# Node server dependencies
+server/node_modules/
+server/.env
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
