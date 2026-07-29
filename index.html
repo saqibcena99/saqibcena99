@@ -80,10 +80,10 @@
 
   <main class="main">
 
+    <canvas id="bg-canvas"></canvas>
+
     <!-- Hero Section -->
     <section id="hero" class="hero section dark-background">
-
-      <canvas id="hero-canvas"></canvas>
 
       <div class="container hero-content" data-aos="fade-up" data-aos-delay="100">
         <div class="hero-badge">GHL Specialist & Marketing Automation</div>
@@ -733,7 +733,7 @@
 
   </main>
 
-  <footer id="footer" class="footer position-relative light-background">
+  <footer id="footer" class="footer position-relative">
 
     <div class="container">
       <div class="copyright text-center ">
@@ -779,7 +779,7 @@
     (function() {
       'use strict';
 
-      const canvas = document.getElementById('hero-canvas');
+      const canvas = document.getElementById('bg-canvas');
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
 
@@ -841,11 +841,8 @@
 
       // Scroll-driven animation with parallax
       function onScroll() {
-        const rect = heroSection.getBoundingClientRect();
-        const heroHeight = heroSection.offsetHeight;
-        const viewportH = window.innerHeight;
-        const scrolled = Math.max(0, -rect.top);
-        const maxScroll = heroHeight - viewportH;
+        const scrolled = window.scrollY;
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
         const progress = Math.min(1, Math.max(0, scrolled / maxScroll));
         const frameIndex = Math.min(frameCount - 1, Math.floor(progress * (frameCount - 1)));
 
@@ -857,36 +854,34 @@
           });
         }
 
-        // Fade out hero content as user scrolls
-        if (heroContent) {
+        // Fade out hero content as user scrolls past hero section
+        if (heroContent && heroSection) {
+          const rect = heroSection.getBoundingClientRect();
+          const heroMaxScroll = heroSection.offsetHeight;
+          const heroScrolled = Math.max(0, -rect.top);
+          const heroProgress = Math.min(1, Math.max(0, heroScrolled / heroMaxScroll));
+          
           const fadeStart = 0.15;
           const fadeEnd = 0.55;
-          if (progress <= fadeStart) {
+          if (heroProgress <= fadeStart) {
             heroContent.style.opacity = '1';
             heroContent.style.transform = 'translate(-50%, -50%)';
-          } else if (progress >= fadeEnd) {
+            heroContent.style.display = 'block';
+            heroSection.classList.remove('hero-past');
+          } else if (heroProgress >= fadeEnd) {
             heroContent.style.opacity = '0';
             heroContent.style.pointerEvents = 'none';
+            if (rect.bottom <= 0) {
+              heroContent.style.display = 'none';
+              heroSection.classList.add('hero-past');
+            }
           } else {
-            const fadeProgress = (progress - fadeStart) / (fadeEnd - fadeStart);
+            const fadeProgress = (heroProgress - fadeStart) / (fadeEnd - fadeStart);
             heroContent.style.opacity = String(1 - fadeProgress);
             heroContent.style.transform = 'translate(-50%, calc(-50% - ' + (fadeProgress * 60) + 'px))';
-          }
-        }
-
-        // Hide fixed elements when past hero
-        if (rect.bottom <= 0) {
-          if (heroContent) {
-            heroContent.style.display = 'none';
-          }
-          canvas.style.display = 'none';
-          if (heroSection) heroSection.classList.add('hero-past');
-        } else {
-          if (heroContent) {
             heroContent.style.display = 'block';
+            heroSection.classList.remove('hero-past');
           }
-          canvas.style.display = 'block';
-          if (heroSection) heroSection.classList.remove('hero-past');
         }
       }
 
