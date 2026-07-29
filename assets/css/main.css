@@ -567,6 +567,13 @@ section,
   pointer-events: none;
 }
 
+@media (min-width: 1200px) {
+  #bg-canvas {
+    left: 300px;
+    width: calc(100% - 300px);
+  }
+}
+
 .hero:before {
   content: "";
   background: linear-gradient(
@@ -603,8 +610,12 @@ section,
 
 @media (min-width: 1200px) {
   .hero .hero-content {
-    left: calc(150px + 50%);
+    left: calc(50% + 150px) !important;
     transform: translate(-50%, -50%);
+  }
+  .hero:before {
+    left: 300px;
+    width: calc(100% - 300px);
   }
 }
 
