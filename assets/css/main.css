@@ -211,13 +211,7 @@ h6 {
   background: var(--accent-color);
 }
 
-@media (min-width: 1200px) {
 
-  .header~main,
-  .header~#footer {
-    margin-left: 300px;
-  }
-}
 
 @media (max-width: 1199px) {
   .header {
@@ -573,12 +567,7 @@ section,
   pointer-events: none;
 }
 
-@media (min-width: 1200px) {
-  #bg-canvas {
-    left: 300px;
-    width: calc(100% - 300px);
-  }
-}
+
 
 .hero:before {
   content: "";
@@ -614,16 +603,7 @@ section,
   max-width: 800px;
 }
 
-@media (min-width: 1200px) {
-  .hero .hero-content {
-    left: calc(50% + 150px) !important;
-    transform: translate(-50%, -50%);
-  }
-  .hero:before {
-    left: 300px;
-    width: calc(100% - 300px);
-  }
-}
+
 
 /* Hero Badge */
 .hero-badge {
